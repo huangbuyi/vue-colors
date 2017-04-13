@@ -1,0 +1,70 @@
+{
+  "name": "react-colors",
+  "version": "0.1.2",
+  "title": "React colors",
+  "description": "A customizable color picker",
+  "homepage": "https://huangbuyi.github.io/react-colors/",
+  "main": "lib/index.js",
+  "files": [
+    "dist",
+    "lib"
+  ],
+  "scripts": {
+    "test": "jest",
+    "coverage": "jest && codecov",
+    "start": "webpack-dev-server --inline --port 8081",
+    "docs-start": "webpack-dev-server --config ./scripts/docs.config --inline",
+    "clean": "rd /s/q lib && mkdir lib",
+    "lib": "npm run clean && babel src --out-dir lib --ignore \"**/*.test.js\"",
+    "docs": "webpack --config ./scripts/docs.config",
+    "docs-build": "webpack --config ./scripts/build.config"
+  },
+  "author": "Shibin Huang",
+  "license": "MIT",
+  "devDependencies": {
+    "babel-cli": "^6.24.0",
+    "babel-core": "^6.18.2",
+    "babel-jest": "^17.0.2",
+    "babel-loader": "^6.2.8",
+    "babel-plugin-transform-decorators-legacy": "^1.3.4",
+    "babel-preset-es2015": "^6.18.0",
+    "babel-preset-react": "^6.16.0",
+    "babel-preset-stage-2": "^6.18.0",
+    "codecov": "^2.1.0",
+    "css-loader": "^0.26.1",
+    "enzyme": "^2.7.1",
+    "enzyme-to-json": "^1.5.0",
+    "eslint": "^3.13.1",
+    "eslint-plugin-babel": "^4.0.0",
+    "eslint-plugin-jsx-a11y": "^3.0.2",
+    "eslint-plugin-react": "^6.9.0",
+    "file-loader": "^0.9.0",
+    "github-markdown-css": "^2.5.0",
+    "jest": "^19.0.2",
+    "json-loader": "^0.5.4",
+    "marked": "^0.3.6",
+    "prismjs": "^1.6.0",
+    "raw-loader": "^0.5.1",
+    "react": "^15.4.1",
+    "react-addons-perf": "^15.4.1",
+    "react-addons-test-utils": "^15.4.2",
+    "react-css-modules": "^4.1.0",
+    "react-dom": "^15.4.1",
+    "style-loader": "^0.13.1",
+    "url-loader": "^0.5.7",
+    "webpack": "^2.2.1",
+    "webpack-dev-middleware": "^1.10.1",
+    "webpack-dev-server": "^2.4.1",
+    "webpack-hot-middleware": "^2.17.1",
+    "webpack-validator": "^2.3.0"
+  },
+  "dependencies": {
+    "chroma-js": "^1.2.2",
+    "lodash": "^4.17.4"
+  },
+  "jest": {
+    "rootDir": "src",
+    "coverageDirectory": "./coverage/",
+    "collectCoverage": true
+  }
+}

@@ -1,0 +1,8 @@
+node_modules
+coverage
+lib
+dist
+TODOs.md
+npm-debug.log
+
+
