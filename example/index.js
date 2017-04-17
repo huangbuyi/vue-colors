@@ -1,7 +1,8 @@
 import Vue from 'vue'
-import NumberInput from '../src/components/NumberInput'
+import Test from './index.vue'
+
 
 var vm = new Vue({
 	el: '#app',
-	render: h => h(NumberInput)
+	render: h => h(Test),
 })

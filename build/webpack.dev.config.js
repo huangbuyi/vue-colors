@@ -5,7 +5,7 @@ module.exports = {
 	entry: path.resolve(__dirname, '../example/index.js'),
 	output: {
 		path: path.resolve(__dirname, '../example/build'),
-		publicPath: 'http://127.0.0.1:8080/example/build',
+		publicPath: 'http://127.0.0.3:8080/example/build',
 		filename: 'bundle.js'
 	},
 	resolve: {
@@ -38,6 +38,8 @@ module.exports = {
 		historyApiFallback: true,
 		hot: true,
 		inline: true,
+		host: '127.0.0.3',
+		port: 8080
 		//progress: true,
 	},
 	plugins: [
