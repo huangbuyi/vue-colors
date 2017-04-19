@@ -9,8 +9,9 @@
 		>-</button>
 		<input 
 			class='vc-number-input'
+			:class='{ disabled: disabled }'
+			:disabled='disabled'
 			type='number' 
-			ref='input'
 			:value='currValue' 
 			:min='min'
 			:max='max'
@@ -107,6 +108,13 @@ export default {
 	methods: {
 		setValue(v) {
 			let {min, max} = this
+
+			if(this.disabled) {
+				this.upDisabled = true 
+				this.downDisabled = true
+				return
+			}
+
 			if(v >= max) {
 				v = max
 				this.upDisabled = true
@@ -117,7 +125,7 @@ export default {
 				this.upDisabled = false 
 				this.downDisabled = false
 			}
-			return this.currValue = this.fix(v)
+			this.currValue = this.fix(v)
 		},
 		handleChange(e) {
 			const v = Number(e.target.value)
@@ -232,10 +240,13 @@ export default {
 	box-sizing: border-box;
 	border: 1px solid #f0f0f0;
 	width: 70px;
-	height: 35px;
+	height: 34px;
 	font-size: 14px;
 	vertical-align: top;
 	padding-left: 16px;
 	font-family: Consolas;
+}
+.vc-number-input.disabled {
+	color: rgba(0,0,0,0.33);
 }
 </style>
