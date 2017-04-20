@@ -24,7 +24,7 @@ export default {
 		},
 		model: {
 			validator(v) {
-				return ['r','g','b','h','s','v','l'].indexOf(String(v).toLowerCase()) > -1
+				return ['r','g','b','h','s','v','l'].indexOf(v) > -1
 			},
 			default: 's'
 		},

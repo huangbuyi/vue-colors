@@ -1,6 +1,6 @@
 <template>
 	<div class='vc-slider'>
-		<span class='vc-slider-label left'>{{ 0 }}</span>
+		<div class='vc-slider-label left'>{{ 0 }}</div>
 		<div 
 			class='vc-slider-track'
 			:style='trackStyle'
@@ -8,7 +8,7 @@
 		>
 			<div 
 				class='vc-slider-before'
-				:style='beforeStyle'
+				:style='beforeStyle2'
 			></div>
 			<div 
 				class='vc-slider-pointer'
@@ -17,12 +17,13 @@
 				@touchstart='handleMouseDown'
 			></div>
 		</div>
-		<span class='vc-slider-label right'> {{ 123 }} </span>
+		<div class='vc-slider-label right'> {{ 123 }} </div>
 	</div>
 </template>
 
 <script>
 import calcEventPosition from '../../utils/calcEventPosition'
+import {throttle} from 'lodash'
 
 export default {
 	props: {
@@ -38,18 +39,20 @@ export default {
 			type: Number,
 			default: 100
 		},
-		trackStyle: Object
+		trackStyle: Object,
+		beforeStyle: Object
 	},
 	data() {
 		return {
-			currValue: this.value
+			currValue: this.format(this.value),
+			active: false
 		}
 	},
 	computed: {
-		beforeStyle() {
-			return {
+		beforeStyle2() {
+			return Object.assign({
 				width: 100 * this.currValue / (this.max - this.min) + '%'
-			}
+			}, this.beforeStyle)
 		},
 		pointerStyle() {
 			return {
@@ -59,6 +62,7 @@ export default {
 	},
 	methods: {
 		handleMouseDown() {
+			this.active = true
 			document.addEventListener('mousemove', this.handleDrag)
 			document.addEventListener('touchmove', this.handleDrag)
 			document.addEventListener('touchend', this.handleMouseUp)
@@ -68,14 +72,35 @@ export default {
 			e.preventDefault()
 			let p = calcEventPosition(e, this.$refs.track)
 			const {min, max} = this
-			this.currValue = min + p.leftP * (max - min) 
+			let newValue = min + p.leftP * (max - min) 
+			if(newValue === this.currValue) {
+				return 
+			}
+			this.currValue = newValue
+			this.$emit('change', this.currValue)
 		},
 		handleMouseUp() {
+			this.active = false
 			document.removeEventListener('mousemove', this.handleDrag)
 			document.removeEventListener('touchmove', this.handleDrag)
 			document.removeEventListener('touchend', this.handleMouseUp)
 			document.removeEventListener('mouseup', this.handleMouseUp)
 		},
+		format(v) {
+			v = v > this.max ? this.max : v 
+			v = v < this.min ? this.min : v
+			return v 
+		}
+	},
+	watch: {
+		value(v) {
+			if(!this.active) {
+				this.currValue = this.format(v)
+			}
+		}
+	},
+	beforeMount() {
+		this.handleDrag = throttle(this.handleDrag, 20)
 	}
 }
 </script>
@@ -85,9 +110,9 @@ export default {
 	position: relative;
 	height: 30px;
 	margin-bottom: 6px;
+	user-select: none;
 }
 .vc-slider-track {
-	display: inline-block;
 	position: absolute;
 	left: 30px;
 	right: 30px;
@@ -103,14 +128,15 @@ export default {
 }
 .vc-slider-pointer {
 	position: absolute;
-	top: -15px;
 	width: 30px;
 	height: 30px;
 	border-radius: 15px;
 	background: #fff;
-	box-shadow: rgba(0,0,0,0.35) 0 1px 3px;
+	box-shadow: rgba(0, 0, 0, 0.117647) 0px 1px 3px, rgba(0, 0, 0, 0.217647) 0px 1px 2px;
 	user-select: none;
 	cursor: move;
+	transform: translate(-15px,-15px);
+	z-index: 1;
 }
 .vc-slider-label {
 	box-sizing: border-box;

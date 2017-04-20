@@ -70,7 +70,7 @@ export default {
 .vc-locator {
 	position: relative;
 	width: 100%;
-	height: 255px;
+	height: 200px;
 	background: red;
 }
 .vc-locator-pointer {

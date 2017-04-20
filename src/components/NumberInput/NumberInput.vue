@@ -118,14 +118,19 @@ export default {
 			if(v >= max) {
 				v = max
 				this.upDisabled = true
+				this.downDisabled = false
 			} else if (v <= min) {
 				v = min 
 				this.downDisabled = true
+				this.upDisabled = false
 			} else {
 				this.upDisabled = false 
 				this.downDisabled = false
 			}
-			this.currValue = this.fix(v)
+			if(v !== this.currValue) {
+				this.$emit('change', v)
+				this.currValue = this.fix(v)
+			}
 		},
 		handleChange(e) {
 			const v = Number(e.target.value)
@@ -168,9 +173,6 @@ export default {
 			this.upActive = false
 			this.downActive = false
 		},
-		changeValue (v) {
-			this.$emit('change', v)
-		},
 		fix (v) {
 			if(this.fixed === 'auto') {
 				let fixed = Math.log10(1 / this.step)
@@ -184,9 +186,6 @@ export default {
 	watch: {
 		value (v) {
 			this.setValue(v)
-		},
-		currValue (v) {
-			this.changeValue(v)
 		}
 	},
 
