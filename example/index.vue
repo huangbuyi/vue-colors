@@ -6,7 +6,6 @@
 		<NumberInput :value='hsv[0]' :min='a0' :max='a360' @change='handleHChange'/>
 		<NumberInput :value='hsv[1]' :min='a0' :max='a100' @change='handleSChange'/>
 		<NumberInput :value='hsv[2]' :min='a0' :max='a100' @change='handleVChange'/>
-		<button @click='handleClick'>+</button>
 		<div class='vc-model'>
 			<ul>
 				<li 
@@ -17,7 +16,7 @@
 				</li>
 			</ul>
 		</div>
-		<ColorLocator2d :model='model'/>
+		<ColorLocator2d :color='currColor' :model='model' @change='handleChange'/>
 		<ColorSlider :value='rgb[0]' :min='a0' :max='a255' :beforeStyle='style.slider1_before' @change='handleRChange'/>
 		<ColorSlider :value='rgb[1]' :min='a0' :max='a255' :beforeStyle='style.slider2_before' @change='handleGChange'/>
 		<ColorSlider :value='rgb[2]' :min='a0' :max='a255' :beforeStyle='style.slider3_before' @change='handleBChange'/>
@@ -45,11 +44,16 @@ export default {
 		ColorLocator2d,
 		ColorSlider
 	},
+	props: {
+		color: {
+			type: String,
+			default: 'pink'
+		}
+	},
 	data () {
 		return {
-			value: 2,
+			currColor: null,
 			chroma: null,
-			color: [255,0,0,1],
 			model: 'r',
 			allModel: ['r','g','b','h','s','v'],
 			activeModel: 'rgb',
@@ -66,18 +70,14 @@ export default {
 			}
 		},
 		rgb() {
-			return this.chroma.rgb()
+			return this.currColor.rgb
 		},
 		hsl() {
-			console.log(this.chroma.hsl())
-			return this.chroma.hsl()
+			return this.currColor.hsl
 		},
 		hsv() {
-			let hsv = this.chroma.hsv()
-			hsv[0] = hsv[0] || 0
-			hsv[1] *= 100
-			hsv[2] *= 100
-			return hsv
+			let hsv = this.currColor.hsv
+			return [hsv[0] || 0, hsv[1]*100, hsv[2]*100]
 		},
 		style () {
 
@@ -108,7 +108,7 @@ export default {
 				},
 				slider6_track: {
 					background: `linear-gradient(to right, hsl(${ this.hsl[0] },100%,0%), hsl(${ this.hsl[0] },100%,50%), hsl(${ this.hsl[0] },100%,100%) )`
-				},
+				}
 			}
 		}
 	},
@@ -118,33 +118,48 @@ export default {
 				this.model = newModel
 			}
 		},
-		handleClick () {
-			this.value += 1
+		handleChange(v, model) { 
+			this.currColor = this.getColors(v, model)                     
 		},
-		handleChange(v, type) {
-			this.chroma = this.chroma.set(type, v)
+		getColors (color, model) {
+			if( model ) {
+				this.chroma = this.chroma.set(model, color)
+			} 
+			let c = this.chroma
+			return Object.assign({
+				rgb: c.rgb(),
+				hsv: c.hsv(), 
+				hsl: c.hsl()
+			}, {[model]: color})
 		},
 		handleRChange(v) {
-			this.handleChange(v, 'rgb.r')
+			let rgb = this.currColor.rgb
+			this.handleChange([v, rgb[1], rgb[2]], 'rgb')
 		},
 		handleGChange(v) {
-			this.handleChange(v, 'rgb.g')
+			let rgb = this.currColor.rgb
+			this.handleChange([rgb[0], v, rgb[2]], 'rgb')
 		},
 		handleBChange(v) {
-			this.handleChange(v, 'rgb.b')
+			let rgb = this.currColor.rgb
+			this.handleChange([rgb[0], rgb[1], v], 'rgb')
 		},
 		handleHChange(v) {
-			this.handleChange(v, 'hsv.h')
+			let hsv = this.currColor.hsv
+			this.handleChange([v, hsv[1], hsv[2]], 'hsv')
 		},
 		handleSChange(v) {
-			this.handleChange(v / 100, 'hsv.s')
+			let hsv = this.currColor.hsv
+			this.handleChange([hsv[0], v/100, hsv[2]], 'hsv')
 		},
 		handleVChange(v) {
-			this.handleChange(v / 100, 'hsv.v')
-		},
+			let hsv = this.currColor.hsv
+			this.handleChange([hsv[0], hsv[1], v/100], 'hsv')
+		}
 	},
 	beforeMount() {
 		this.chroma = chroma(this.color)
+		this.currColor = this.getColors(this.color)
 	}
 }
 </script>

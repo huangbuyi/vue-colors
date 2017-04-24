@@ -125,6 +125,7 @@ export default {
 	background: red;
 	width: 50px;
 	height: 1px;
+	transition: all 75ms cubic-bezier(0.4,0,0.6,1);
 }
 .vc-slider-pointer {
 	position: absolute;
@@ -137,6 +138,7 @@ export default {
 	cursor: move;
 	transform: translate(-15px,-15px);
 	z-index: 1;
+	transition: all 75ms cubic-bezier(0.4,0,0.6,1);
 }
 .vc-slider-label {
 	box-sizing: border-box;

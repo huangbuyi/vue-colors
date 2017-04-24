@@ -19,11 +19,11 @@ import calcEventPosition from '../../utils/calcEventPosition'
 export default {
 	props: {
 		locationX: {
-			type: Number,
+			//type: Number,
 			default: 0
 		},
 		locationY: {
-			type: Number,
+			//type: Number,
 			default: 0
 		},
 		disabled: {
@@ -78,5 +78,6 @@ export default {
 	width: 10px;
 	height: 10px;
 	background: yellow;
+	transition: all 75ms cublic-bezier(0.4,0,0.6,1);
 }
 </style>

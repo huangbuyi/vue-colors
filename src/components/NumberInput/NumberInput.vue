@@ -41,7 +41,7 @@ function increaseInvoke(call) {
 	let timer = null
 	const increase = () => {
 		duration = (new Date() - start) / 1000
-		let time = 40 + 1000 / (1 + duration * duration)
+		let time = 35 + 1000 / (1 + duration * duration * duration)
 		timer = setTimeout(() => {
 			call()
 			increase()
@@ -106,7 +106,7 @@ export default {
 	},
 
 	methods: {
-		setValue(v) {
+		setValue(v, isEmit=true) {
 			let {min, max} = this
 
 			if(this.disabled) {
@@ -128,7 +128,7 @@ export default {
 				this.downDisabled = false
 			}
 			if(v !== this.currValue) {
-				this.$emit('change', v)
+				isEmit && this.$emit('change', v)
 				this.currValue = this.fix(v)
 			}
 		},
@@ -185,7 +185,7 @@ export default {
 
 	watch: {
 		value (v) {
-			this.setValue(v)
+			this.setValue(v, false)
 		}
 	},
 

@@ -1,5 +1,7 @@
 <template>
 	<Locator2d 
+		:locationX='location.leftP'
+		:locationY='location.topP'
 		:style='style'
 		@change='handleChange'
 	/>
@@ -16,12 +18,7 @@ export default {
 		Locator2d
 	}, 
 	props: {
-		color: {
-			type: Array,
-			default: function () {
-				return [255,1,1]
-			}
-		},
+		color: Object,
 		model: {
 			validator(v) {
 				return ['r','g','b','h','s','v','l'].indexOf(v) > -1
@@ -29,19 +26,27 @@ export default {
 			default: 's'
 		},
 	},
-	computed: {
-		style () {
-			return {
-				background: getBackground2d(this.model, this.color)
-			}
+	data() {
+		return {
+			currColor: null
 		}
+	},
+	computed: {
+		style() {
+			return {
+				background: getBackground2d(this.model, this.currColor)
+			}
+		},
+		location() {
+			return this.getPosition(this.currColor, this.model)
+		},
 	},
 	methods: {
 		handleChange(p) {
-			console.log(this.getColor(p))
+			this.$emit('change', this.getColor(p, this.currColor, this.model), this.getModel(this.model))
 		},
-		getColor(p) {
-	    let {color, model} = this
+		getColor(p, color, model) {
+
 	    let newColor = {
 	      'r': [color[0], 255 - p.topP * 255, p.leftP * 255],
 	      'g': [255 - p.topP * 255, color[1], p.leftP * 255],
@@ -52,8 +57,15 @@ export default {
 	    }
 	    return newColor[model]
 	  },
-	  getPosition () {
-	    let {color, model} = this
+	  getModel(v) {
+	  	if('rgb'.indexOf(v) > -1){
+	  		return 'rgb'
+	  	}
+	  	if('hsv'.indexOf(v) > -1){
+	  		return 'hsv'
+	  	}
+	  },
+	  getPosition (color, model) {
 	    let position = {
 	      'r': {
 	        leftP: color[2] / 255,
@@ -82,6 +94,17 @@ export default {
 	    }
 	    return position[model]
 	  }
+	},
+	watch: {
+		model(v) {
+			this.currColor = this.color[this.getModel(v)]
+		},
+		color(c) {
+			this.currColor = this.color[this.getModel(this.model)]
+		}
+	},
+	beforeMount() {
+		this.currColor = this.color[this.getModel(this.model)]
 	}
 }
 
