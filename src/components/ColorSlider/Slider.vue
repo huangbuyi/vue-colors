@@ -51,12 +51,14 @@ export default {
 	computed: {
 		beforeStyle2() {
 			return Object.assign({
-				width: 100 * this.currValue / (this.max - this.min) + '%'
+				width: 100 * this.currValue / (this.max - this.min) + '%',
+				transition: this.active ? null : 'all 375ms cubic-bezier(0.4,0,0.6,1)'
 			}, this.beforeStyle)
 		},
 		pointerStyle() {
 			return {
-				left: 100 * this.currValue / (this.max - this.min) + '%'
+				left: 100 * this.currValue / (this.max - this.min) + '%',
+				transition: this.active ? null : 'all 375ms cubic-bezier(0.4,0,0.6,1)'
 			}
 		}
 	},
@@ -119,13 +121,13 @@ export default {
 	top: 14px;
 	height: 1px;	
 	background: #ccc;
+	transition: all 375ms cubic-bezier(0.4,0,0.6,1);
 }
 .vc-slider-before {
 	position: absolute;
 	background: red;
 	width: 50px;
 	height: 1px;
-	transition: all 75ms cubic-bezier(0.4,0,0.6,1);
 }
 .vc-slider-pointer {
 	position: absolute;
@@ -138,7 +140,6 @@ export default {
 	cursor: move;
 	transform: translate(-15px,-15px);
 	z-index: 1;
-	transition: all 75ms cubic-bezier(0.4,0,0.6,1);
 }
 .vc-slider-label {
 	box-sizing: border-box;
