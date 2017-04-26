@@ -10,7 +10,9 @@
 	<div 
 		class='vc-locator-pointer'
 		:style='pointerStyle'
-	></div>
+	>
+		<div class='vc-locator-color' :style='colorStyle'></div>
+	</div>
 </div>
 </template>
 
@@ -31,7 +33,8 @@ export default {
 			type: Boolean,
 			default: false
 		},
-    style: Object
+    style: Object,
+    colorStyle: Object
 	},
 	data () {
 		return {
@@ -54,14 +57,14 @@ export default {
 			this.active = true
 			this.handleChange(e)
 			window.addEventListener('mousemove', this.handleChange)
-			window.addEventListener('tochmove', this.handleChange)
+			window.addEventListener('touchmove', this.handleChange)
 			window.addEventListener('mouseup', this.handleMouseUp)
 			window.addEventListener('touchend', this.handleMouseUp)
 		},
 		handleMouseUp() {
 			this.active = false
 			window.removeEventListener('mousemove', this.handleChange)
-			window.removeEventListener('tochmove', this.handleChange)
+			window.removeEventListener('touchmove', this.handleChange)
 			window.removeEventListener('mouseup', this.handleMouseUp)
 			window.removeEventListener('touchend', this.handleMouseUp)
 		},
@@ -92,9 +95,30 @@ export default {
 	background: red;
 }
 .vc-locator-pointer {
+	box-sizing: border-box;
 	position: absolute;
 	width: 10px;
 	height: 10px;
-	background: yellow;
+	background: #fff;
+	box-shadow: rgba(0, 0, 0, 0.117647) 0px 1px 3px, rgba(0, 0, 0, 0.117647) 0px 1px 2px;
+	width: 60px;
+	height: 40px;
+	transform: translate(-30px, 10px);
+	padding: 4px;
+}
+.vc-locator-pointer::before {
+	box-sizing: border-box;
+	position: absolute;
+	left: 20px;
+	top: -20px;
+	content: '';
+	border-width: 10px;
+	border-color: transparent transparent #fff  transparent;
+	border-style: solid;
+}
+.vc-locator-color {
+	box-sizing: border-box;
+	height: 100%;
+	border: 1px solid rgba(200,200,200,0.2);
 }
 </style>

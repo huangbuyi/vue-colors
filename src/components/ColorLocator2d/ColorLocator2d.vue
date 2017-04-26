@@ -4,6 +4,7 @@
 		:locationY='location.topP'
 		:style='style'
 		@change='handleChange'
+		:colorStyle='{background: color.hex}'
 	/>
 </template>
 
