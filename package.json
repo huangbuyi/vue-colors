@@ -10,7 +10,9 @@
     "lib"
   ],
   "scripts": {
-    "start": "webpack-dev-server --config ./build/webpack.dev.config --inline "
+    "start": "webpack-dev-server --config ./build/webpack.dev.config --inline ",
+    "clean": "rd /s /q lib && mkdir lib",
+    "package": "npm run clean && babel src --out-dir lib --ignore \"**/*.test.js\""
   },
   "author": "Shibin Huang",
   "license": "MIT",
