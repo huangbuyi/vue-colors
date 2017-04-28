@@ -1,6 +1,10 @@
 <template>
 	<div class='vc-slider'>
-		<div class='vc-slider-label left'>{{ 0 }}</div>
+		<div class='vc-slider-title'>
+			<div class='vc-slider-field'>{{ label }}</div>
+			<div class='vc-slider-value'>Value:{{this.currValue.toFixed(0)}}</div>
+		</div>
+		<div class='vc-slider-label left'>{{ min }}</div>
 		<div 
 			class='vc-slider-track'
 			:style='trackStyle'
@@ -17,7 +21,7 @@
 				@touchstart='handleMouseDown'
 			></div>
 		</div>
-		<div class='vc-slider-label right'> {{ 123 }} </div>
+		<div class='vc-slider-label right'> {{ max }} </div>
 	</div>
 </template>
 
@@ -39,8 +43,9 @@ export default {
 			type: Number,
 			default: 100
 		},
+		label: String,
 		trackStyle: Object,
-		beforeStyle: Object
+		beforeStyle: Object,
 	},
 	data() {
 		return {
@@ -52,13 +57,13 @@ export default {
 		beforeStyle2() {
 			return Object.assign({
 				width: 100 * this.currValue / (this.max - this.min) + '%',
-				transition: this.active ? null : 'all 375ms cubic-bezier(0.4,0,0.6,1)'
+				transition: this.active ? null : 'all 375ms cubic-bezier(0.4,0,0.2,1)'
 			}, this.beforeStyle)
 		},
 		pointerStyle() {
 			return {
 				left: 100 * this.currValue / (this.max - this.min) + '%',
-				transition: this.active ? null : 'all 375ms cubic-bezier(0.4,0,0.6,1)'
+				transition: this.active ? null : 'all 375ms cubic-bezier(0.4,0,0.2,1)'
 			}
 		}
 	},
@@ -114,9 +119,22 @@ export default {
 	margin-bottom: 6px;
 	user-select: none;
 }
+.vc-slider-title {
+	display: inline-block;
+}
+.vc-slider-field {
+	line-height: 1;
+	font-size: 16px;
+	color: rgba(0,0,0,0.87);
+}
+.vc-slider-value {
+	line-height: 1;
+	font-size: 12px;
+	color: rgba(0,0,0,0.54);
+}
 .vc-slider-track {
 	position: absolute;
-	left: 30px;
+	left: 80px;
 	right: 30px;
 	top: 14px;
 	height: 1px;	
@@ -147,12 +165,12 @@ export default {
 	width: 30px;
 	line-height: 30px;
 	color: rgba(0,0,0,0.54);
-	font-size: 16px;
+	font-size: 12px;
 	padding: 0 3px;
 }
 .vc-slider-label.left {
 	position: absolute;
-	left: 0;
+	left: 50px;
 	text-align: right;
 }
 .vc-slider-label.right {

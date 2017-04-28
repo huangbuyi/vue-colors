@@ -1,31 +1,34 @@
 <template>
 	<div class='vc-number'>
-		<button
-			class='vc-number-btn'
-			:class='{ active: !downDisabled && downActive, disabled: downDisabled }'
-			@click='handleDown'
-			@mousedown='handleDownHold'
-			@touchstart='handleDownHold'
-		>-</button>
-		<input 
-			class='vc-number-input'
-			:class='{ disabled: disabled }'
-			:disabled='disabled'
-			type='number' 
-			:value='currValue' 
-			:min='min'
-			:max='max'
-			:step='step'
-			@change='handleChange'
-			:placeHolder='placeHolder'
-		/>
-		<button
-			class='vc-number-btn'
-			:class='{ active: !upDisabled && upActive, disabled: upDisabled }'
-			@click='handleUp'
-			@mousedown='handleUpHold'
-			@touchstart='handleUpHold'
-		>+</button>
+		<div class='label'>{{label}}</div>
+		<div class='input'>
+			<button
+				class='vc-number-btn'
+				:class='{ active: !downDisabled && downActive, disabled: downDisabled }'
+				@click='handleDown'
+				@mousedown='handleDownHold'
+				@touchstart='handleDownHold'
+			>-</button>
+			<input 
+				class='vc-number-input'
+				:class='{ disabled: disabled }'
+				:disabled='disabled'
+				type='number' 
+				:value='currValue' 
+				:min='min'
+				:max='max'
+				:step='step'
+				@change='handleChange'
+				:placeHolder='placeHolder'
+			/>
+			<button
+				class='vc-number-btn'
+				:class='{ active: !upDisabled && upActive, disabled: upDisabled }'
+				@click='handleUp'
+				@mousedown='handleUpHold'
+				@touchstart='handleUpHold'
+			>+</button>
+		</div>
 	</div>
 </template>
 
@@ -92,7 +95,8 @@ export default {
 		placeHolder: {
 			type: String,
 			default: '请输入数字'
-		}
+		},
+		label: String
 	},
 
 	data() {
@@ -194,7 +198,7 @@ export default {
 		this.clearTimer && this.clearTimer()
 	},
 	beforeMount () {
-		this.setValue(this.value)
+		this.setValue(this.value, false)
 	}
 }
 </script>
@@ -204,6 +208,18 @@ export default {
 	box-sizing: border-box;
 	width: 100%;
 	font-size: 0;
+	margin-bottom: 12px;
+}
+.vc-number .label {
+	display: inline-block;
+	width: 20px;
+	line-height: 34px;
+	vertical-align: top;
+	font-size: 16px;
+	color: rgba(0,0,0,0.87);
+}
+.vc-number .input {
+	display: inline-block;
 }
 .vc-number-btn {
 	box-sizing: border-box;

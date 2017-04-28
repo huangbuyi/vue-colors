@@ -18,6 +18,7 @@
 
 <script>
 import calcEventPosition from '../../utils/calcEventPosition'
+import {throttle} from 'lodash'
 
 export default {
 	props: {
@@ -48,7 +49,8 @@ export default {
 			return {
 				left: this.x * 100 + '%',
 				top: this.y * 100 + '%',
-				transition: this.active ? null : 'all 375ms cubic-bezier(0.4,0,0.6,1)',
+				transition: this.active ? null : 'all 375ms cubic-bezier(0.4,0,0.2,1)',
+				transform: 'translate(-30px, 10px) ' + (this.y > 0.78 ? 'rotate(180deg)' : '')
 			}
 		}
 	},
@@ -82,6 +84,9 @@ export default {
 		locationY (v) {
 			this.y = v
 		}
+	},
+	beforeMount() {
+		this.handleChange = throttle(this.handleChange, 20)
 	}
 }
 
@@ -103,8 +108,8 @@ export default {
 	box-shadow: rgba(0, 0, 0, 0.117647) 0px 1px 3px, rgba(0, 0, 0, 0.117647) 0px 1px 2px;
 	width: 60px;
 	height: 40px;
-	transform: translate(-30px, 10px);
 	padding: 4px;
+	transform-origin: 30px -10px;
 }
 .vc-locator-pointer::before {
 	box-sizing: border-box;
