@@ -10,8 +10,8 @@ module.exports = merge(config, {
 		main: './docs/index.js'
 	},
 	output: {
-		path: path.resolve(__dirname, '../docs/build'),
-		publicPath: '/docs/build/',
+		path: path.resolve(__dirname, '../docs'),
+		publicPath: '/docs/',
 		filename: 'bundle.js',
 	}
 })
