@@ -32,28 +32,7 @@ module.exports = {
 			test: /\.md$/,
 			loader: 'raw-loader'
 		}]
-	},
-	devtool: "cheap-eval-source-map",
-	devServer: {
-		historyApiFallback: true,
-		hot: true,
-		inline: true,
-		//progress: true,
-	},
-	plugins: [
-		new webpack.DefinePlugin({
-			'process.env.NODE.ENV':"development"
-		}),
-		new webpack.HotModuleReplacementPlugin()
-	]
-/*	plugins: [
-		new webpack.DefinePlugin({
-		  'process.env': {
-		    NODE_ENV: JSON.stringify('production')
-		  }
-		}),
-		new webpack.optimize.UglifyJsPlugin()	
-	]*/
+	}
 }	
 
 			

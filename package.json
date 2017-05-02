@@ -1,18 +1,28 @@
 {
-  "name": "vue-colors",
-  "version": "0.0.1",
-  "title": "vue colors",
-  "description": "",
+  "name": "vue-color-picker",
+  "version": "0.6.1",
+  "title": "vue color picker",
+  "description": "A responsive color picker with Vue.js",
   "homepage": "",
-  "main": "lib/index.js",
+  "keywords": [
+    "vue",
+    "vue.js",
+    "mobile",
+    "color picker",
+    "color",
+    "responsive",
+    "material",
+    "multi-model"
+  ],
+  "main": "dist/vueColorPicker.min.js",
   "files": [
     "dist",
     "lib"
   ],
   "scripts": {
-    "start": "webpack-dev-server --config ./build/webpack.dev.config --inline ",
-    "clean": "rd /s /q lib && mkdir lib",
-    "package": "npm run clean && babel src --out-dir lib --ignore \"**/*.test.js\""
+    "dist": "webpack --config build/webpack.prod.config",
+    "docs": "webpack-dev-server --config build/webpack.docs.config --inline ",
+    "docs:dist": "webpack --config build/webpack.docs.dist.config"
   },
   "author": "Shibin Huang",
   "license": "MIT",
@@ -36,7 +46,11 @@
     "vue-loader": "^11.3.4",
     "vue-template-compiler": "^2.2.6",
     "webpack": "^2.2.1",
-    "webpack-dev-server": "^2.4.1"
+    "webpack-dev-server": "^2.4.1",
+    "webpack-merge": "^4.1.0"
+  },
+  "peerDependencies": {
+    "vue": "^2.2.6"
   },
   "dependencies": {
     "chroma-js": "^1.3.3",

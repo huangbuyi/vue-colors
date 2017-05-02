@@ -276,14 +276,14 @@ export default {
 }
 </script>
 
-<style>
-body {margin:0; padding:0;}
+<style scoped>
 .vc-color-picker {
 	display: inline-block;
 }
 .vc-target {
 	width: 32px;
 	height: 32px;
+	cursor: pointer;
 }
 .vc-container {
 	position: fixed;

@@ -27,7 +27,7 @@
 
 <script>
 import calcEventPosition from '../../utils/calcEventPosition'
-import {throttle} from 'lodash'
+import throttle from 'lodash/throttle'
 
 export default {
 	props: {
@@ -112,7 +112,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .vc-slider {
 	position: relative;
 	height: 30px;

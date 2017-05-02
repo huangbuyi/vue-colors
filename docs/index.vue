@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class='demo'>
 		<picker>
 		</picker>
 	</div>
@@ -7,10 +7,17 @@
 
 <script>
 import picker from '../src/components/Picker'
+import picker2 from '../dist/vueColorPicker.min'
 
 export default {
 	components: {
-		picker
+		picker: picker2
 	}
 }
 </script>
+
+<style>
+.demo {
+	margin: 24px;
+}
+</style>
