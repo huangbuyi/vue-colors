@@ -102,6 +102,7 @@ export default {
 		},
 		color(c) {
 			this.currColor = this.color[this.getModel(this.model)]
+			console.log(this.color)
 		}
 	},
 	beforeMount() {

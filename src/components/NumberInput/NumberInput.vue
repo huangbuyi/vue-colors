@@ -12,9 +12,10 @@
 			<input 
 				class='vc-number-input'
 				:class='{ disabled: disabled }'
+				:style='inputStyle'
 				:disabled='disabled'
-				type='number' 
-				:value='currValue' 
+				:type='inputType' 
+				:value='inputValue' 
 				:min='min'
 				:max='max'
 				:step='step'
@@ -33,6 +34,8 @@
 </template>
 
 <script>
+import numberToHex from '../../utils/numberToHex'
+import hexToNumber from '../../utils/hexToNumber'
 /**
  * 以越来越短的间隔调用函数，直到返回的函数被调用。
  * @call  {[function]} 回调函数
@@ -56,6 +59,7 @@ function increaseInvoke(call) {
 		timer = null
 	}
 }
+
 
 export default {
 	name: 'NumberInput',
@@ -96,7 +100,12 @@ export default {
 			type: String,
 			default: '请输入数字'
 		},
-		label: String
+		label: String,
+		hex: {
+			type: Boolean,
+			default: false
+		},
+		inputStyle: Object
 	},
 
 	data() {
@@ -106,6 +115,15 @@ export default {
 			downDisabled: false,
 			upActive: false,
 			downActive: false
+		}
+	},
+
+	computed: {
+		inputValue () {
+			return this.hex ? numberToHex(this.currValue) : this.currValue
+		},
+		inputType () {
+			return this.hex ? 'text' :　'number'
 		}
 	},
 
@@ -131,17 +149,21 @@ export default {
 				this.upDisabled = false 
 				this.downDisabled = false
 			}
+
 			if(v !== this.currValue) {
 				isEmit && this.$emit('change', v)
-				this.currValue = this.fix(v)
+				let fixedValue = this.fix(v)
+				this.currValue = fixedValue
 			}
 		},
 		handleChange(e) {
-			const v = Number(e.target.value)
+			const value = e.target.value
+			const v = this.hex ? hexToNumber(value) : Number(value)
 			if(isNaN(v)) {
+				this.setValue(0)
 				return false
 			}
-			this.setValue(e.target.value)
+			this.setValue(v)
 		},
 		handleUp() { 
 			this.setValue(this.currValue + this.step)

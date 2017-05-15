@@ -1,7 +1,7 @@
 
 
 
-function padStart(str, targetLength,padString) {
+function padStart(str, targetLength, padString) {
     targetLength = targetLength>>0; //floor if number or convert non-number to 0;
     padString = String(padString || ' ');
     if (str.length > targetLength) {

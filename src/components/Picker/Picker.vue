@@ -29,31 +29,33 @@
 					<div class='controls'>
 						<transition name='panel'>
 							<div class='panel' key='sliders' v-if='view === 1'>
-								<ColorSlider label='R' :value='rgb[0]' :min='a0' :max='a255' :beforeStyle='style.slider1_before' @change='handleRChange'/>
-								<ColorSlider label='G' :value='rgb[1]' :min='a0' :max='a255' :beforeStyle='style.slider2_before' @change='handleGChange'/>
-								<ColorSlider label='B' :value='rgb[2]' :min='a0' :max='a255' :beforeStyle='style.slider3_before' @change='handleBChange'/>
+								<ColorSlider label='R' :value='rgb[0]' :min='0' :max='255' :beforeStyle='style.slider1_before' @change='handleRChange'/>
+								<ColorSlider label='G' :value='rgb[1]' :min='0' :max='255' :beforeStyle='style.slider2_before' @change='handleGChange'/>
+								<ColorSlider label='B' :value='rgb[2]' :min='0' :max='255' :beforeStyle='style.slider3_before' @change='handleBChange'/>
 								<div class='vc-space'></div>
-								<ColorSlider label='H' :value='hsv[0]' :min='a0' :max='a360' :beforeStyle='style.slider4_before' :trackStyle='style.slider4_track' @change='handleHChange'/>
-								<ColorSlider label='S' :value='hsv[1]' :min='a0' :max='a100' :beforeStyle='style.slider5_before' :trackStyle='style.slider5_track' @change='handleSChange'/>
-								<ColorSlider label='B' :value='hsv[2]' :min='a0' :max='a100' :beforeStyle='style.slider6_before' :trackStyle='style.slider6_track' @change='handleVChange'/>
+								<ColorSlider label='H' :value='hsv[0]' :min='0' :max='360' :beforeStyle='style.slider4_before' :trackStyle='style.slider4_track' @change='handleHChange'/>
+								<ColorSlider label='S' :value='hsv[1]' :min='0' :max='100' :beforeStyle='style.slider5_before' :trackStyle='style.slider5_track' @change='handleSChange'/>
+								<ColorSlider label='B' :value='hsv[2]' :min='0' :max='100' :beforeStyle='style.slider6_before' :trackStyle='style.slider6_track' @change='handleVChange'/>
+								<div class='vc-space'></div>
+								<ColorSlider label='A' :value='hsv[2]' :min='0' :max='100' :beforeStyle='style.slider6_before' :trackStyle='style.slider6_track' @change='handleVChange'/>
 							</div>
 							<div class='panel' key='numbers' v-if='view === 0'>
 								<div class='vc-numbers'>
 									<div class='vc-number-container'>
-										<NumberInput label='R' :value='rgb[0]' :min='a0' :max='a255' @change='handleRChange'/>
-										<NumberInput label='G' :value='rgb[1]' :min='a0' :max='a255' @change='handleGChange'/>
-										<NumberInput label='B' :value='rgb[2]' :min='a0' :max='a255' @change='handleBChange'/>
+										<NumberInput label='R' :value='rgb[0]' :min='0' :max='255' @change='handleRChange'/>
+										<NumberInput label='G' :value='rgb[1]' :min='0' :max='255' @change='handleGChange'/>
+										<NumberInput label='B' :value='rgb[2]' :min='0' :max='255' @change='handleBChange'/>
 									</div>
 									<div class='vc-number-container'>
-										<NumberInput label='H' :value='hsv[0]' :min='a0' :max='a360' @change='handleHChange'/>
-										<NumberInput label='S' :value='hsv[1]' :min='a0' :max='a100' @change='handleSChange'/>
-										<NumberInput label='V' :value='hsv[2]' :min='a0' :max='a100' @change='handleVChange'/>
+										<NumberInput label='H' :value='hsv[0]' :min='0' :max='360' @change='handleHChange'/>
+										<NumberInput label='S' :value='hsv[1]' :min='0' :max='100' @change='handleSChange'/>
+										<NumberInput label='V' :value='hsv[2]' :min='0' :max='100' @change='handleVChange'/>
 									</div>
-									<div class='vc-number-container'>
-										<NumberInput label='H' :value='hsv[0]' :min='a0' :max='a360' @change='handleHChange'/>
+									<div class='vc-number-container2'>
+										<NumberInput label='Hex' :value='hex' :min='0' :max='16777215' @change='handleHexChange' :hex='true' :inputStyle='{width: "90px"}'/>
 									</div>
-									<div class='vc-number-container'>
-										<NumberInput label='H' :value='hsv[0]' :min='a0' :max='a360' @change='handleHChange'/>
+									<div class='vc-number-container2'>
+										<NumberInput label='H' :value='hsv[0]' :min='0' :max='360' @change='handleHChange'/>
 									</div>
 								</div>
 							</div>
@@ -104,6 +106,8 @@ import ColorLocator2d from '../ColorLocator2d'
 import ColorSlider from '../ColorSlider'
 import chroma from 'chroma-js'
 import materialColors from '../../utils/materialColors'
+import numberToHex from '../../utils/numberToHex'
+import hexToNumber from '../../utils/hexToNumber'
 
 export default {
 	components: {
@@ -132,10 +136,6 @@ export default {
 			activeModel: 'rgb',
 			view: 0,
 			showPalette: false,
-			a0: 0, 
-			a100: 100, 
-			a255: 255, 
-			a360: 360,
 			materialColors,
 			historyColors: []
 		}
@@ -155,6 +155,9 @@ export default {
 		hsv() {
 			let hsv = this.currColor.hsv
 			return [hsv[0] || 0, hsv[1]*100, hsv[2]*100]
+		},
+		hex() {
+			return hexToNumber(this.currColor.hex)
 		},
 		style () {
 
@@ -238,6 +241,9 @@ export default {
 		handleVChange(v) {
 			let hsv = this.currColor.hsv
 			this.handleChange([hsv[0], hsv[1], v/100], 'hsv')
+		},
+		handleHexChange(v) {
+			this.handleChange(numberToHex(v), 'hex')
 		},
 		handleAccept() {
 			this.historyColors.unshift(this.currColor.hex)
