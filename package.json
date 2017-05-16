@@ -12,7 +12,8 @@
     "color",
     "responsive",
     "material",
-    "multi-model"
+    "multi-model",
+    "palette"
   ],
   "main": "dist/vueColorPicker.min.js",
   "files": [
